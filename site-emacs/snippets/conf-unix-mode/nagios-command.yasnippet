@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: nagios-command
+# key: defcom
+# expand-env: ((yas/indent-line "fixed"))
+# --
+define command {
+       command_name ${1:check name}
+       command_line \$USER1\$/check_by_ssh -t \$USER4\$ -p \$ARG1\$ -o "StrictHostKeyChecking=no" -i /home/nagios/.ssh/id_rsa -H $HOSTADDRESS\$ -C "\$USER5\$/${2:check executable}"
+}
+
+$0
