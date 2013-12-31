@@ -24,3 +24,4 @@ ede-projects.el
 elpa/
 site-emacs/packages/
 eshell/
+jedi/
