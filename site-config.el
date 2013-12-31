@@ -40,8 +40,30 @@
 ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;; company mode
+(eval-after-load "company"
+  '(progn
+     (add-to-list 'company-backends 'company-jedi)
+     (add-to-list 'company-backends 'company-robe)))
+;; python stuff
+(eval-after-load "python"
+  '(progn
+     (define-key python-mode-map (kbd ".") 'company-jedi-complete-on-dot)
+     (define-key python-mode-map (kbd "<C-tab>") 'company-jedi)
+     (define-key python-mode-map (kbd "M-?") 'company-jedi-show-doc)
+     (define-key python-mode-map (kbd "M-r") 'company-jedi-find-references)
+     (define-key python-mode-map (kbd "M-.") 'company-jedi-goto-definition)
+     (define-key python-mode-map (kbd "M-,") 'pop-tag-mark)))
+(add-hook 'python-mode-hook 'company-jedi-eldoc-setup)
+(add-hook 'python-mode-hook 'company-jedi-start)
+(global-company-mode)
+
+(eval-after-load 'company
+  '(define-key company-active-map (kbd "C-:") 'helm-company))
+
 ;;;; helm
 (require 'helm-config)
+(require 'helm-company)
 (helm-mode 1)
 (global-set-key (kbd "C-x SPC") 'helm-mini)
 (global-set-key (kbd "M-x") 'helm-M-x)
@@ -115,6 +137,9 @@
 (global-set-key (kbd "C-x x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
+;;;; window-numbering
+(window-numbering-mode t)
+
 ;;;; bookmarks
 (global-set-key (kbd "<C-f6>") '(lambda () (interactive) (bookmark-set "SAVED")))
 (global-set-key (kbd "<f6>") '(lambda () (interactive) (bookmark-jump "SAVED")))
@@ -126,7 +151,6 @@
 (add-hook 'org-mode-hook 'turn-on-flyspell 'append)
 (mapcar (lambda (mode-hook) (add-hook mode-hook 'flyspell-prog-mode))
      '(c-mode-common-hook R-mode-hook emacs-lisp-mode-hook))
-
 
 
 ;;;; some default hooks

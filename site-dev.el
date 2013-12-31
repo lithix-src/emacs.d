@@ -8,10 +8,11 @@
 ;; python
 ; load bare essentials for some functionality
 ; I don't want depending on everything else in this file
-(autoload 'python-mode "~/.emacs.d/site-emacs/site-python.el")
-(autoload 'virtualenv-workon "~/.emacs.d/site-emacs/site-python.el")
 (add-to-list 'auto-mode-alist
 	 '("\\.py$" . python-mode))
+(autoload 'python-mode "~/.emacs.d/site-emacs/site-python.el")
+(autoload 'virtualenv-workon "~/.emacs.d/site-emacs/site-python.el")
+
 ;; elisp
 (add-to-list 'auto-mode-alist
 	 '("\\.el$" . emacs-lisp-mode))

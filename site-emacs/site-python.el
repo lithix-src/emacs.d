@@ -18,7 +18,8 @@
 
 ;;;; setup emacs
 (setenv "PYMACS_PYTHON" "python2.7")
-
+(setq py-python-command-args '("--matplotlib" "--colors" "LightBG"))
+(setq ansi-color-for-comint-mode t)
 (require 'python-mode)
 (require 'pymacs)
 (require 'python-pep8)
@@ -84,17 +85,17 @@
 (setq-default tab-width 4)
 
 ;; virtualenv support
-(setq virtual-env (getenv "VIRTUAL_ENV"))
 (setq virtual-env-use-ipython t)
 
-(add-to-list 'load-path "~/.emacs.d/site-emacs/pylookup")
+(add-to-list 'load-path "~/.emacs.d/site-emacs/packages/pylookup")
 (autoload 'pylookup-lookup "pylookup")
 (autoload 'pylookup-update "pylookup")
 (setq pylookup-program
-      "~/.emacs.d/site-emacs/pylookup/pylookup.py")
+      "~/.emacs.d/site-emacs/pylookup/packages/pylookup.py")
 (setq pylookup-db-file
-      "~/.emacs.d/site-emacs/pylookup/pylookup.db")
+      "~/.emacs.d/site-emacs/pylookup/packages/pylookup.db")
 (global-set-key "\C-ch" 'pylookup-lookup)
+(setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
 
 
 ;; keybindings
@@ -111,3 +112,8 @@
    "';'.join(module_completion('''%s'''))\n"
  python-shell-completion-string-code
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
+;;;; useful functions
+(defadvice venv-mkvirtualenv (after install-common-tools)
+  "Install commonly used packages in new venvs."
+  (shell-command "pip install flake8 nose jedi ipython"))

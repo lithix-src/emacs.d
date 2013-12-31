@@ -24,13 +24,14 @@
 (scroll-bar-mode -1)
 (ido-mode t)
 (setq fill-column 80)
+(setq indent-tabs-mode nil)
+(setq tab-stop-list (number-sequence 4 120 4))
 
 ;;;; base configs
 ;; set the garbage collection threshold to
 ;; every 20mb allocations
 (setq gc-cons-threshold 20000000)
 (setq require-final-newline t)
-(add-hook 'after-save-hook 'whitespace-cleanup)
 (windmove-default-keybindings 'shift)
 (show-paren-mode t)
 ;; Turn beep off
