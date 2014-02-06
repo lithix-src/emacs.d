@@ -8,3 +8,4 @@
 (add-hook 'scala-mode-hook
 	  '(lambda ()
 	     (ensime-scala-mode-hook)))
+

@@ -25,6 +25,18 @@
 ;; misc
 (global-set-key (kbd "<f1>") 'open-init)
 
+;; full screen
+; disable the stupidity that is os x full screen 
+(setq ns-use-native-fullscreen nil)
+
+(defun toggle-fullscreen ()
+  "Toggle full screen"
+  (interactive)
+(set-frame-parameter
+ nil 'fullscreen
+ (when (not (frame-parameter nil 'fullscreen)) 'fullboth)))
+(global-set-key (kbd "s-<return>") 'toggle-fullscreen)
+
 ;; keybinding functions
 (defun open-init ()
   "Open emacs init file found in ~/.emacs.d and open it in another buffer"
@@ -95,6 +107,7 @@
 (add-to-list 'ac-modes 'elsip-mode)
 (add-to-list 'ac-modes 'python-mode)
 (add-to-list 'ac-modes 'scala-mode)
+
 (global-auto-complete-mode)
 (setq
  ac-auto-start 2
@@ -130,6 +143,7 @@
 (require 'yasnippet)
 (require 'yasnippet-bundle)
 (yas/global-mode 1)
+(yas/initialize)
 
 ;;;; smex
 (require 'smex)

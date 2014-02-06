@@ -3,19 +3,6 @@
 ;;;; Some needed packages to install via pip before all this works
 ;;;; elpy, epc, jedi
 
-;;;; Setup needed emacs packages.
-;;;; Requires marmalade and melpa packages set
-(setq to-install
-      '(python-mode
-    magit
-    yasnippet
-    jedi
-    auto-complete
-    autopair
-    find-file-in-repository))
-
-(mapc 'install-if-needed to-install)
-
 ;;;; setup emacs
 (setenv "PYMACS_PYTHON" "python2.7")
 (setq py-python-command-args '("--matplotlib" "--colors" "LightBG"))
