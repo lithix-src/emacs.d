@@ -27,4 +27,4 @@ site-emacs/packages/
 eshell/
 jedi/
 .python-environments/
-./site-emacs/snippets/*
+abbrev_defs

@@ -15,6 +15,32 @@
 (global-set-key [f7] 'find-file-in-repository)
 (global-set-key (kbd "S-<f7>") 'find-file-in-project)
 (global-set-key (kbd "C-x M-f") 'find-file-at-point)
+(global-unset-key (kbd "s-,"))
+(global-set-key (kbd "s-,") 'previous-buffer)
+(global-set-key (kbd "s-.") 'next-buffer)
+
+;;;; helm
+(require 'helm-config)
+(helm-mode 1)
+(global-set-key (kbd "C-x SPC") 'helm-mini)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-x b") 'helm-buffers-list)
+
+;; eshell
+;; greatness...
+(require 'nyan-prompt)
+
+;; nifty package that allows for easy switching of shell buffers
+(require 'shell-switcher)
+(add-hook 'eshell-load-hook 'nyan-prompt-enable)
+(setq shell-switcher-mode t)
+(global-set-key (kbd "s-'") 'shell-switcher-switch-buffer)
+(global-set-key (kbd "C-s-'") 'shell-switcher-switch-buffer-other-window)
+(global-set-key [f1] 'shell-switcher-new-shell)
+
+;; packages
+(global-set-key (kbd "s-M-P") 'package-list-packages)
 
 ;; scm
 (global-set-key (kbd "M-?") 'magit-status)
@@ -22,11 +48,11 @@
 ;; editing
 (global-set-key (kbd "C-\\") 'comment-region)
 
-;; misc
+;; misc utility bindings
 (global-set-key (kbd "<f1>") 'open-init)
 
 ;; full screen
-; disable the stupidity that is os x full screen 
+; disable the stupidity that is os x full screen
 (setq ns-use-native-fullscreen nil)
 
 (defun toggle-fullscreen ()
@@ -35,7 +61,7 @@
 (set-frame-parameter
  nil 'fullscreen
  (when (not (frame-parameter nil 'fullscreen)) 'fullboth)))
-(global-set-key (kbd "s-<return>") 'toggle-fullscreen)
+(global-set-key (kbd "M-<return>") 'toggle-fullscreen)
 
 ;; keybinding functions
 (defun open-init ()
@@ -52,35 +78,8 @@
 ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;; company mode
-(eval-after-load "company"
-  '(progn
-     (add-to-list 'company-backends 'company-jedi)
-     (add-to-list 'company-backends 'company-robe)))
-;; python stuff
-(eval-after-load "python"
-  '(progn
-     (define-key python-mode-map (kbd ".") 'company-jedi-complete-on-dot)
-     (define-key python-mode-map (kbd "<C-tab>") 'company-jedi)
-     (define-key python-mode-map (kbd "M-?") 'company-jedi-show-doc)
-     (define-key python-mode-map (kbd "M-r") 'company-jedi-find-references)
-     (define-key python-mode-map (kbd "M-.") 'company-jedi-goto-definition)
-     (define-key python-mode-map (kbd "M-,") 'pop-tag-mark)))
-(add-hook 'python-mode-hook 'company-jedi-eldoc-setup)
-(add-hook 'python-mode-hook 'company-jedi-start)
-(global-company-mode)
-
-(eval-after-load 'company
-  '(define-key company-active-map (kbd "C-:") 'helm-company))
-
-;;;; helm
-(require 'helm-config)
-(require 'helm-company)
-(helm-mode 1)
-(global-set-key (kbd "C-x SPC") 'helm-mini)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-x b") 'helm-buffers-list)
+;;;; el-get
+(require 'el-get)
 
 ;;;; ido
 (require 'flx-ido)
@@ -89,13 +88,6 @@
 ;; disable ido faces to see flx highlights.
 (setq ido-use-faces nil)
 (setq flx-ido-threshhold 10000)
-
-;;;; yasnippt
-(require 'yasnippet)
-(setq yas-snippet-dirs
-      '("~/.emacs.d/site-emacs/snippets"                 ;; personal snippets
-	))
-
 
 ;;;; auto-complete.el
 (require 'auto-complete)
@@ -115,8 +107,17 @@
  ac-use-menu-map t
  ac-candidate-limit 20)
 
+;;;; whitespace-mode
+(setq whitespace-style
+      '(trailing
+        lines
+        space-before-tab
+        indentation
+        space-after-tab)
+      whitespace-line-column 80)
 
 ;;;; ag
+;; replacement for regular emacs grep
 (require 'ag)
 (setq ag-highlight-search t)
 
@@ -128,36 +129,13 @@
 (define-key comint-mode-map [down] 'comint-next-matching-input-from-input)
 (define-key comint-mode-map [up] 'comint-previous-matching-input-from-input)
 
-
-;;;; projectile
-(require 'grizzl)
-(require 'projectile)
-(projectile-global-mode)
-(setq projectile-enable-caching t)
-(setq projectile-completeion-system 'grizzl)
-(global-set-key (kbd "s-p") 'projectile-find-file)
-(global-set-key (kbd "s-b") 'projectile-switch-to-buffer)
-
-
-;;;; yasnippets
-(require 'yasnippet)
-(require 'yasnippet-bundle)
-(yas/global-mode 1)
-(yas/initialize)
-
-;;;; smex
-(require 'smex)
-(smex-initialize)
-(global-set-key (kbd "C-x x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-
 ;;;; window-numbering
+;; gives me a number in the mode bar for which window i'm in
 (window-numbering-mode t)
 
 ;;;; bookmarks
 (global-set-key (kbd "<C-f6>") '(lambda () (interactive) (bookmark-set "SAVED")))
 (global-set-key (kbd "<f6>") '(lambda () (interactive) (bookmark-jump "SAVED")))
-
 
 ;; flyspell
 (setq-default ispell-program-name "/usr/local/bin/ispell")
@@ -170,7 +148,8 @@
 ;;;; some default hooks
 (add-hook 'text-mode-hook 'auto-fill-mode)
 (add-hook 'fundamental-mode-hook 'auto-fill-mode)
-
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'emacs-lisp-mode '(auto-complete-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;

@@ -1,13 +1,13 @@
 ;;; ~/.emacs.d/site-emacs/site-org.el --- Configurations for org-mode
 
-;;; TODO: Reconfigure REFILE path
-;;; TODO: Reconfigure all the agenda file paths
-
 ;; requires
 (require 'org-install)
 (require 'org-habit)
 (require 'auto-complete)
 (auto-complete-mode t)
+
+(add-to-list 'auto-mode-alist
+	 '("\\.org$" . org-mode))
 
 ;;; misc document handling
 (add-to-list 'auto-mode-alist
@@ -18,10 +18,8 @@
 		    org-inlinetask
 		    org-info
 		    org-id))
-(setq org-agenda-files '("~/Dropbox/org"
-			 "~/Dropbox/org/bigdoor"
-			 "~/Dropbox/org/udacity"
-			 "~/Dropbox/org/udacity/cs262"))
+(setq org-agenda-files '("~/Dropbox/org"))
+
 ;; variables
 (setq org-clock-persist t)
 (setq org-clock-in-resume t)
@@ -59,11 +57,11 @@
 			    ("HOLD" . ?h)
 			    ("PERSONAL". ?P)
 			    ("WORK" . ?W)
+			    ("FIX" . ?f)
+			    ("IDEA" . ?i)
 			    ("MEETINGS" . ?M)
-			    ("CLIENT_SERVICES" . ?C)
 			    ("ORG" . ?O)
-			    ("BIGDOOR" . ?B)
-			    ("JIRA" . ?J)
+			    ("SOCRATA" . ?S)
 			    ("NOTE" . ?n)
 			    ("CANCELLED" . ?c)
 			    ("FLAGGED" . ??))))
@@ -82,19 +80,25 @@
 
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/Dropbox/org/refile.org")
-	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t :empty-lines 1)
+	      ("m" "meeting/interrupt" entry (file "~/Dropbox/org/refile.org")
+	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resumne t :empty-lines 1)
 	      ("r" "respond" entry (file "~/Dropbox/org/refile.org")
-	       "* TODO Respond to %:from on %:subject\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+	       "* TODO Respond to %:from on %:subject\n%U\n%a\n"
+	       :clock-in t :clock-resume t :immediate-finish t :empty-lines 1)
 	      ("n" "note" entry (file "~/Dropbox/org/refile.org")
-	       "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-	      ("j" "Journal" entry (file+datetree "~/Dropbox/org/diary.org")
-	       "* %?\n%U\n" :clock-in t :clock-resume t)
+	       "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t :empty-lines 1)
+	      ("j" "Journal" entry (file+datetree "~/Dropbox/org/log.org")
+	       "* %?\n%U\n" :clock-in t :clock-resume t :empty-lines 1)
 	      ("w" "org-protocol" entry (file "~/Dropbox/org/refile.org")
-	       "* TODO Review %c\n%U\n" :immediate-finish t)
+	       "* TODO Review %c\n%U\n" :immediate-finish t :empty-lines 1)
 	      ("p" "Phone call" entry (file "~/Dropbox/org/refile.org")
-	       "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+	       "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t :empty-lines 1)
 	      ("h" "Habit" entry (file "~/Dropbox/org/refile.org")
-	       "* NEXT %?\n%U\n%a\nSCHEDULED: %t .+1d/3d\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+	       "* NEXT %?\n%U\n%a\nSCHEDULED: %t .+1d/3d\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")
+	      ("b" "Blog Entry" entry (file+datetree "~/Dropbox/org/sulci/blog.org")
+	       "* %^{Title} :DRAFT:blog:noexport:\n:PROPERTIES:\n:on: %T\n:END:\n%?"
+	       :clock-in t :clock-resume t :empty-lines 1))))
 ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
 				 (org-agenda-files :maxlevel . 9))))
@@ -111,22 +115,29 @@
 (ido-mode (quote both))
 (setq org-refile-target-verify-function 'bh/verify-refile-target)
 
-;; key bindings
+;;;; key bindings
+;; global
 (global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
+(global-unset-key (kbd "s-A"))
+(global-set-key (kbd "s-A") 'org-agenda)
+(global-set-key (kbd "s-r") 'org-capture)
+(global-unset-key (kbd "s-o"))
+(global-set-key (kbd "s-o") 'bh/punch-out)
+(global-set-key (kbd "s-;") 'org-clock-in-last)
+(global-set-key (kbd "s-I") 'org-clock-goto)
 (global-set-key (kbd "C-c b") 'org-iswitchb)
-(global-set-key (kbd "C-c n") 'org-add-note)
-(global-set-key (kbd "<f11>") 'org-clock-goto)
-(global-set-key (kbd "C-<f11>") 'org-clock-in)
-(global-set-key (kbd "<f12>") 'org-agenda)
-(global-set-key (kbd "C-M-r") 'org-capture)
-(global-set-key (kbd "C-c r") 'org-capture)
-(global-set-key (kbd "<f9> I") 'bh/punch-in)
-(global-set-key (kbd "<f9> O") 'bh/punch-out)
-(global-set-key (kbd "<f9> t") 'bh/insert-inactive-timestamp)
-(global-set-key (kbd "<f9> T") 'tabify)
-(global-set-key (kbd "<f9> U") 'untabify)
-(global-set-key (kbd "C-x n r") 'narrow-to-region)
+
+;; org-mode only
+(define-key org-mode-map (kbd "s-n") 'org-add-note)
+;; not sure if i'm going to use this key over the punch-in function
+;(define-key org-mode-map (kbd "s-i") 'org-clock-in)
+(define-key org-mode-map (kbd "s-i") 'bh/punch-in)
+(define-key org-mode-map (kbd "<f9> t") 'bh/insert-inactive-timestamp)
+(define-key org-mode-map (kbd "<f9> T") 'tabify)
+(define-key org-mode-map (kbd "<f9> U") 'untabify)
+(define-key org-mode-map (kbd "C-x n r") 'narrow-to-region)
+(define-key org-mode-map (kbd "s-a") 'org-archive-subtree)
+(define-key org-mode-map (kbd "C-s-t") 'org-todo)
 
 ;; Do not dim blocked tasks
 (setq org-agenda-dim-blocked-tasks nil)
@@ -198,8 +209,8 @@
 ;         (org-agenda-skip-function 'bh/skip-project-tasks-maybe)
 	 (org-agenda-sorting-strategy
 	  '(category-keep))))
-       ("f" "Org Fixes" tags-todo "-REFILE-CANCELLED+FIXES/!-HOLD-WAITING"
-	((org-agenda-overriding-header "Tasks to fix Org stuff")
+       ("f" "Fixes" tags-todo "-REFILE-CANCELLED+FIXES/!-HOLD-WAITING"
+	((org-agenda-overriding-header "Tasks to fix stuff")
 	 (org-agenda-sorting-strategy
 	  '(todo-state-down effort-up category-keep))))
        ("T" "Org Tasks" tags-todo "-REFILE-CANCELLED+FIXES/!-HOLD-WAITING"
@@ -208,14 +219,6 @@
 	  '(todo-state-down effort-up category-keep))))
        ("O" "Org Work"
 	((agenda "")
-	 (tags-todo "ORG+FIXES-REFILE-CANCELLED/!NEXT"
-		    ((org-agenda-overriding-header "Org Next Fix")
-		     (org-tags-match-list-sublevels nil)
-		     (org-agenda-todo-ignore-scheduled t)
-		     (org-agenda-todo-ignore-deadlines t)
-		     (org-agenda-todo-ignore-with-date t)
-		     (org-agenda-sorting-strategy
-		      '(todo-state-down effort-up category-keep))))
 	 (tags-todo "ORG-REFILE-CANCELLED-FIXES/!NEXT"
 		    ((org-agenda-overriding-header "Org Next Task")
 		     (org-tags-match-list-sublevels nil)
@@ -225,7 +228,7 @@
 		     (org-agenda-sorting-strategy
 		      '(todo-state-down effort-up category-keep))))
 	 (tags-todo "ORG-REFILE-CANCELLED-FIXES/!NEXT"
-		    ((org-agenda-sorting-strategy "Org Next Project")
+		    ((org-agenda-overriding-header "Org Next Project")
 		     (org-agenda-skip-function 'bh/skip-non-projects)
 		     (org-agenda-todo-ignore-scheduled t)
 		     (org-agenda-todo-ignore-deadlines t)
@@ -612,3 +615,7 @@ A prefix arg forces clcok in of the default task."
 	 (t (car org-clock-history))))
     (org-with-point-at clock-in-to-task
       (org-clock-in nil))))
+
+;;;; blogging stuff
+(require 'org-jekyll)
+(setq blog-sulci-site-name "http://sulci.net/blog/")
