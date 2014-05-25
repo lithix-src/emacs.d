@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: nagios-service-definition
+# key: defsvc
+# expand-env: ((yas/indent-line "fixed"))
+# --
+define service {
+       use ${1:linux-service}
+       hostgroup_name ${2:linux-servers}
+       service_description $3
+       check_command $4!${5:1001}$6
+       $7
+}
+
+$0
