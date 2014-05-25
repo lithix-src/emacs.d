@@ -28,3 +28,4 @@ eshell/
 jedi/
 .python-environments/
 abbrev_defs
+.cask/
