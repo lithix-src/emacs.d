@@ -5,6 +5,7 @@
 .#*
 *.elc
 \!*
+*.pyc
 *before*ecb*
 auto-save-list/
 auto-saves/
@@ -25,3 +26,5 @@ elpa/
 site-emacs/packages/
 eshell/
 jedi/
+.python-environments/
+./site-emacs/snippets/*
