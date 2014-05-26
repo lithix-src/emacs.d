@@ -98,7 +98,6 @@
 (depends-on "ipython")
 (depends-on "javadoc-help")
 (depends-on "javadoc-lookup")
-(depends-on "javap")
 (depends-on "javap-mode")
 (depends-on "javarun")
 (depends-on "jedi")

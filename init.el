@@ -70,7 +70,7 @@
 ;; http://cask.github.io/
 ;; cask, bundler for emacs
 ;; TODO: make this a submodule to my emacs repo
-(require 'cask "~/core/lib/cask/cask.el")
+(require 'cask "~/.cask/cask.el")
 (cask-initialize)
 
 ;; https://github.com/rdallasgray/pallet
