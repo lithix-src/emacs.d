@@ -4,6 +4,37 @@
 (defvar core-lib-path
   (concat core-path "/lib"))
 
+(defun ido-goto-symbol ()
+  "Will update the imenu index and then use ido to select a
+   symbol to navigate to"
+  (interactive)
+  (imenu--make-index-alist)
+  (let ((name-and-pos '())
+        (symbol-names '()))
+    (flet ((addsymbols (symbol-list)
+                       (when (listp symbol-list)
+                         (dolist (symbol symbol-list)
+                           (let ((name nil) (position nil))
+                             (cond
+                              ((and (listp symbol) (imenu--subalist-p symbol))
+                               (addsymbols symbol))
+
+                              ((listp symbol)
+                               (setq name (car symbol))
+                               (setq position (cdr symbol)))
+
+                              ((stringp symbol)
+                               (setq name symbol)
+                               (setq position (get-text-property 1 'org-imenu-marker symbol))))
+
+                             (unless (or (null position) (null name))
+                               (add-to-list 'symbol-names name)
+                               (add-to-list 'name-and-pos (cons name position))))))))
+      (addsymbols imenu--index-alist))
+    (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
+           (position (cdr (assoc selected-symbol name-and-pos))))
+      (goto-char position))))
+
 ;;;; yasnippets
 (require 'yasnippet)
 (yas/global-mode 1)
@@ -16,6 +47,8 @@
 (projectile-global-mode)
 (setq projectile-switch-project-action 'projectile-dired)
 
+(global-unset-key (kbd "C-t"))
+(global-set-key (kbd "C-t") 'ido-goto-symbol)
 (global-set-key (kbd "s-p") 'projectile-find-file)
 (global-set-key (kbd "s-b") 'projectile-switch-to-buffer)
 (global-set-key (kbd "s-g") 'projectile-grep)
@@ -69,24 +102,6 @@
 (sp-with-modes sp--lisp-modes
   (sp-local-pair "(" nil :bind "C-("))
 
-;;;; java
-(add-hook 'java-mode-hook
-	  (load "site-java"))
-(add-to-list 'auto-mode-alist
-	     '("\\.java$" . java-mode))
-
-;;;; scala
-(require 'scala-mode)
-(add-hook 'scala-mode-hook
-	  (load "site-scala"))
-(add-to-list 'auto-mode-alist
-	     '("\\.scala$" . scala-mode))
-
-;;;; python
-; load bare essentials for some functionality
-; I don't want depending on everything else in this file
-(load "site-python")
-
 ;;;; elisp
 (add-to-list 'auto-mode-alist
 	 '("\\.el$" . emacs-lisp-mode))
@@ -94,16 +109,9 @@
 ;;;; org-mode
 (load "site-org")
 
-;;;; ruby
-(require 'enh-ruby-mode)
-(add-to-list 'auto-mode-alist
-	     '("\\.rb$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist
-	     '("Gemfile$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist
-	     '("\\.erb$" . web-mode))
-(autoload 'enh-ruby-mode "~/.emacs.d/site-ruby.el")
+;;;; coffee-mode
 
-;;;; gradle
-(add-to-list 'auto-mode-alist
-	     '("\\.gradle$" . groovy-mode))
+(eval-after-load "coffee-mode"
+  '(progn
+     (define-key
+       coffee-mode-map (kbd "s-j") 'coffee-newline-and-indent)))
