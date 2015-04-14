@@ -31,6 +31,18 @@
 ;; greatness...
 (require 'nyan-prompt)
 
+(setenv "PATH"
+	(concat
+	 (concat
+	  (getenv "HOME")
+	  "/.rbenv/shims:")
+	 (concat
+	  (getenv "HOME")
+	  "/.rbenv/bin:")
+	 "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" ":"
+	 (getenv "PATH")))
+
+
 ;; nifty package that allows for easy switching of shell buffers
 (require 'shell-switcher)
 (add-hook 'eshell-load-hook 'nyan-prompt-enable)
