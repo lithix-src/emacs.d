@@ -5,21 +5,29 @@
 ;;;;;; http://doc.norang.ca/org-mode.html#AgendaSetup
 ;;;; and more recently from Andrea's configurations for python
 ;;;;; https://github.com/AndreaCrotti/minimal-emacs-configuration
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (require 'cl)
 
 ;;;; supporting envs
 (setq emacs-conf-home
       (concat
        (getenv "HOME")
-       "/.emacs.d/"))
+       "/.emacs.d"))
 (setq site-emacs
       (concat
        emacs-conf-home
-       "site-emacs/"))
+       "/site-emacs"))
 (setq site-emacs-packages
       (concat
        site-emacs
-       "packages/"))
+       "/packages"))
+
 (setenv "no_proxy" (concat "gist.github.com," (getenv "no_proxy")))
 
 ;;;; ui
@@ -34,7 +42,7 @@
 
 ;;;; base configs
 ;; set the garbage collection threshold to
-;; every 20mb allocations
+;; every 20mb allocatio¯ns
 (setq gc-cons-threshold 20000000)
 
 ;; add a final new line to files before closing
@@ -54,7 +62,7 @@
 
 ;; first file found is loaded, order matters!
 ;; byte compiled files are preferred over .el files, recompile if you cange files!
-(add-to-list 'load-path emacs-conf-home)
+(add-to-list 'load-path site-emacs)
 (add-to-list 'load-path site-emacs-packages)
 
 ;;;; temp files
@@ -77,7 +85,7 @@
 ;; emacs packet manger
 (require 'pallet)
 
-(add-hook 'after-init-hook
+(eval-after-load "init"
 	  (load "site-config"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -122,6 +130,9 @@
  '(ipython-command "ipython")
  '(magit-auto-revert-mode nil)
  '(org-agenda-files (quote ("~/core/org/wiki.org" "~/core/org/refile.org")))
+ '(package-selected-packages
+   (quote
+    (xml-rpc window-numbering web-mode virtualenvwrapper virtualenv toml-mode textmate syslog-mode sphinx-doc smex smartparens shell-switcher rvm ruby-tools ruby-end ruby-block rspec-mode robe rinari rbenv rainbow-mode pyvirtualenv python-pylint python-pep8 python-info pymacs pyflakes pydoc-info py-autopep8 pep8 pallet org-jekyll nyan-prompt nyan-mode nose mvn multiple-cursors multi-web-mode multi-eshell markdown-mode+ malabar-mode magit-gh-pulls magit-find-file lusty-explorer jtags jedi-direx javarun javap-mode javap javadoc-lookup ipython iedit idomenu html-to-markdown helm-projectile helm-package helm-mode-manager helm-helm-commands helm-flymake helm-flycheck helm-company grizzl gist fuzzy flymake-ruby flymake-python-pyflakes flycheck-pyflakes flycheck-pos-tip flycheck-cask flx-ido find-file-in-repository ensime enh-ruby-mode elpy el-get dockerfile-mode dired+ ctags-update ctags company-inf-ruby color-theme-sanityinc-solarized color-theme cmake-project cmake-mode autopair apples-mode apache-mode ag ac-ispell ac-inf-ruby ac-helm ac-etags)))
  '(url-proxy-services nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map

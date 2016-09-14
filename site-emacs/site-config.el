@@ -15,9 +15,9 @@
 (global-set-key [f7] 'find-file-in-repository)
 (global-set-key (kbd "S-<f7>") 'find-file-in-project)
 (global-set-key (kbd "C-x M-f") 'find-file-at-point)
-(global-unset-key (kbd "s-,"))
-(global-set-key (kbd "s-,") 'previous-buffer)
-(global-set-key (kbd "s-.") 'next-buffer)
+(global-unset-key (kbd "M-,"))
+(global-set-key (kbd "M-,") 'previous-buffer)
+(global-set-key (kbd "M-.") 'next-buffer)
 
 ;;;; helm
 (require 'helm-config)
@@ -47,15 +47,15 @@
 (require 'shell-switcher)
 (add-hook 'eshell-load-hook 'nyan-prompt-enable)
 (setq shell-switcher-mode t)
-(global-set-key (kbd "s-'") 'shell-switcher-switch-buffer)
-(global-set-key (kbd "C-s-'") 'shell-switcher-switch-buffer-other-window)
+(global-set-key (kbd "M-'") 'shell-switcher-switch-buffer)
+(global-set-key (kbd "C-M-'") 'shell-switcher-switch-buffer-other-window)
 (global-set-key [f1] 'shell-switcher-new-shell)
 
 ;; packages
-(global-set-key (kbd "s-M-P") 'package-list-packages)
+(global-set-key (kbd "M-P") 'package-list-packages)
 
 ;; scm
-(global-set-key (kbd "M-?") 'magit-status)
+(global-set-key (kbd "C-?") 'magit-status)
 
 ;; editing
 (global-set-key (kbd "C-\\") 'comment-region)
