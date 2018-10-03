@@ -78,8 +78,12 @@
 ;; http://cask.github.io/
 ;; cask, bundler for emacs
 ;; TODO: make this a submodule to my emacs repo
+(add-to-list
+ 'load-path "~/.cask")
 (require 'cask)
 (cask-initialize)
+(require 'pallet)
+(pallet-mode t)
 
 ;; https://github.com/rdallasgray/pallet
 ;; emacs packet manger
@@ -132,7 +136,7 @@
  '(org-agenda-files (quote ("~/core/org/wiki.org" "~/core/org/refile.org")))
  '(package-selected-packages
    (quote
-    (xml-rpc window-numbering web-mode virtualenvwrapper virtualenv toml-mode textmate syslog-mode sphinx-doc smex smartparens shell-switcher rvm ruby-tools ruby-end ruby-block rspec-mode robe rinari rbenv rainbow-mode pyvirtualenv python-pylint python-pep8 python-info pymacs pyflakes pydoc-info py-autopep8 pep8 pallet org-jekyll nyan-prompt nyan-mode nose mvn multiple-cursors multi-web-mode multi-eshell markdown-mode+ malabar-mode magit-gh-pulls magit-find-file lusty-explorer jtags jedi-direx javarun javap-mode javap javadoc-lookup ipython iedit idomenu html-to-markdown helm-projectile helm-package helm-mode-manager helm-helm-commands helm-flymake helm-flycheck helm-company grizzl gist fuzzy flymake-ruby flymake-python-pyflakes flycheck-pyflakes flycheck-pos-tip flycheck-cask flx-ido find-file-in-repository ensime enh-ruby-mode elpy el-get dockerfile-mode dired+ ctags-update ctags company-inf-ruby color-theme-sanityinc-solarized color-theme cmake-project cmake-mode autopair apples-mode apache-mode ag ac-ispell ac-inf-ruby ac-helm ac-etags)))
+    (edit-indirect markdown-preview-mode xml-rpc window-numbering web-mode virtualenvwrapper virtualenv toml-mode textmate syslog-mode sphinx-doc smex smartparens shell-switcher rvm ruby-tools ruby-end ruby-block rspec-mode robe rinari rbenv rainbow-mode pyvirtualenv python-pylint python-pep8 python-info pymacs pyflakes pydoc-info py-autopep8 pep8 pallet org-jekyll nyan-prompt nyan-mode nose mvn multiple-cursors multi-web-mode multi-eshell markdown-mode+ malabar-mode magit-gh-pulls magit-find-file lusty-explorer jtags jedi-direx javarun javap-mode javap javadoc-lookup ipython iedit idomenu html-to-markdown helm-projectile helm-package helm-mode-manager helm-helm-commands helm-flymake helm-flycheck helm-company grizzl gist fuzzy flymake-ruby flymake-python-pyflakes flycheck-pyflakes flycheck-pos-tip flycheck-cask flx-ido find-file-in-repository ensime enh-ruby-mode elpy el-get dockerfile-mode dired+ ctags-update ctags company-inf-ruby color-theme-sanityinc-solarized color-theme cmake-project cmake-mode autopair apples-mode apache-mode ag ac-ispell ac-inf-ruby ac-helm ac-etags)))
  '(url-proxy-services nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map

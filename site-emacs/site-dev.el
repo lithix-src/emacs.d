@@ -40,7 +40,7 @@
 (yas/global-mode 1)
 
 ;;;; project management via projectile
-(require 'grizzl)
+(require 'ivy)
 (require 'projectile)
 (setq projectile-enable-caching t)
 (setq projectile-completeion-system 'grizzl)
@@ -90,6 +90,15 @@
   (sp-local-tag "s" "```scheme" "```")
   (sp-local-tag "<"  "<_>" "</_>" :transform 'sp-match-sgml-tags))
 
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+(autoload 'gfm-mode "markdown-mode"
+   "Major mode for editing GitHub Flavored Markdown files" t)
+(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+
 ;; tex-mode latex-mode
 (sp-with-modes '(tex-mode plain-tex-mode latex-mode)
   (sp-local-tag "i" "\"<" "\">"))
@@ -105,13 +114,3 @@
 ;;;; elisp
 (add-to-list 'auto-mode-alist
 	 '("\\.el$" . emacs-lisp-mode))
-
-;;;; org-mode
-(load "site-org")
-
-;;;; coffee-mode
-
-(eval-after-load "coffee-mode"
-  '(progn
-     (define-key
-       coffee-mode-map (kbd "s-j") 'coffee-newline-and-indent)))

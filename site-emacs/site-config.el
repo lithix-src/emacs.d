@@ -27,10 +27,6 @@
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-x b") 'helm-buffers-list)
 
-;; eshell
-;; greatness...
-(require 'nyan-prompt)
-
 (setenv "PATH"
 	(concat
 	 (concat
@@ -45,7 +41,6 @@
 
 ;; nifty package that allows for easy switching of shell buffers
 (require 'shell-switcher)
-(add-hook 'eshell-load-hook 'nyan-prompt-enable)
 (setq shell-switcher-mode t)
 (global-set-key (kbd "M-'") 'shell-switcher-switch-buffer)
 (global-set-key (kbd "C-M-'") 'shell-switcher-switch-buffer-other-window)
