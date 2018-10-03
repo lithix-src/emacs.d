@@ -114,3 +114,11 @@
 ;;;; elisp
 (add-to-list 'auto-mode-alist
 	 '("\\.el$" . emacs-lisp-mode))
+
+;;;; magit
+;; by default, C-x m starts compose-mail
+(global-unset-key
+ (kbd "C-x m"))
+
+(global-set-key
+ (kbd "C-x m") `magit-status)
