@@ -18,6 +18,7 @@
 (global-unset-key (kbd "M-,"))
 (global-set-key (kbd "M-,") 'previous-buffer)
 (global-set-key (kbd "M-.") 'next-buffer)
+(global-set-key (kbd "C-c C-x .") 'shell)
 
 ;;;; helm
 (require 'helm-config)

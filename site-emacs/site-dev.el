@@ -122,3 +122,6 @@
 
 (global-set-key
  (kbd "C-x m") `magit-status)
+
+(global-set-key
+ (kbd "C-c a") `markdown-table-align)
